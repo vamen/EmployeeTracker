@@ -11,7 +11,8 @@ import android.content.Context;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class TrackerService extends IntentService {
+public class TrackerService extends IntentService
+{
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_FOO = "com.vivekbalachandra.android.client.Services.action.FOO";
