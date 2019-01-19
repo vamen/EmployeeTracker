@@ -20,6 +20,9 @@ public interface TasksTableDao {
     @Insert
     void insert_task(TasksData instance);
 
+    @Insert
+    void insertMultipleTask(List<TasksData> instances);
+
     @Query("Select * from tasks_table where date = :date")
     LiveData<List<TasksData>> getTodaysTask( Date date);
 

@@ -24,16 +24,15 @@ import retrofit2.Retrofit;
 public class DataSyncService extends IntentService {
 
     public static final String ACTION_SYNC = "sync_service";
-    public static String TAG=DataSyncService.class.getSimpleName();
-    DataBridge database=null;
-    TrackerApis apiClient=null;
-    private static UserModel userModel=null;
+    public static String TAG = DataSyncService.class.getSimpleName();
+    DataBridge database = null;
+    TrackerApis apiClient = null;
+    private static UserModel userModel = null;
 
-    public DataSyncService()
-    {
+    public DataSyncService() {
         super("DataSyncService");
-        database=new DataBridge(getApplication());
-        apiClient=ApiClient.getClient().create(TrackerApis.class);
+        database = new DataBridge(getApplication());
+        apiClient = ApiClient.getClient().create(TrackerApis.class);
 
 
     }
@@ -43,26 +42,24 @@ public class DataSyncService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_SYNC.equals(action)) {
-                userModel=GenertalUtil.CredentialExists(getApplicationContext());
-                if(userModel!=null)
+                userModel = GenertalUtil.CredentialExists(getApplicationContext());
+                if (userModel != null)
                     mSyncData();
 
             }
         }
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
+
     private void mSyncData() {
 
         try {
 
-            apiClient.getTasks(userModel.getToken(), userModel.getToken()).execute();
+            database.insertMultipleTaskData(apiClient.getTasks(userModel.getToken(), userModel.getUser()).execute().body());
 
-        }catch (IOException e){
-            Log.d(TAG,"network error");
+        } catch (IOException e) {
+            // TODO:Handle errors
+            Log.d(TAG, "network error");
         }
     }
 

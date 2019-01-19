@@ -64,6 +64,31 @@ public class DataBridge {
         }
 
     }
+    void insertTaskData(final TasksData tasksData){
+        if(Looper.myLooper()==Looper.getMainLooper()){
+
+            Runnable runnable=new Runnable(){
+                @Override
+                public  void run(){
+
+                    tasksTableDao.insert_task(tasksData);
+            }
+            };
+        }
+    }
+
+    void insertMultipleTaskData(final List<TasksData> tasksData){
+        if(Looper.myLooper()==Looper.getMainLooper()){
+
+            Runnable runnable=new Runnable(){
+                @Override
+                public  void run(){
+
+                    tasksTableDao.insertMultipleTask(tasksData);
+                }
+            };
+        }
+    }
 
     // must be called when app is getting shutting down
     void shutDownExecutor(){

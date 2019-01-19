@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         if (userModel!=null) {
 
             bindViews();
-            Call<List<TaskModel>> data=trackerApis.getTasks(userModel.getToken(),userModel.getUser());
+//            Call<List<TaskModel>> data=trackerApis.getTasks();
             if (isTrackerServiceRunning()) {
 
                 startTrackerService();

@@ -20,5 +20,6 @@ public interface GPSTableDao {
     List<GPSData> getGpsCordinateData(Date date);
 
     @Update
-    int updateGpsCordinateStatus(List<GPSData> instances);
+    int updateGpsCoordinateStatus(List<GPSData> instances);
+
 }
