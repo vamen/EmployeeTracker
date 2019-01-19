@@ -57,7 +57,6 @@ public class DataBridge {
             }
             mExecutorService.execute(runnable);
 
-
         }else{
 
             gpsTableDao.insert(gpsData);

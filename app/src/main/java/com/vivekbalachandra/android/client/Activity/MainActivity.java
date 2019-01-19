@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
         trackerApis=ApiClient.getClient().create(TrackerApis.class);
     }
 
-
-
     public boolean isTrackerServiceRunning() {
         return true;
     }
@@ -59,14 +57,10 @@ public class MainActivity extends AppCompatActivity {
 
         userModel=GenertalUtil.CredentialExists(this.getApplicationContext());
         if (userModel!=null) {
-
             bindViews();
             Call<List<TaskModel>> data=trackerApis.getTasks(userModel.getToken(),userModel.getUser());
             if (isTrackerServiceRunning()) {
-
                 startTrackerService();
-
-
             }
         }else{
                 Intent intent=new Intent(this,LoginActivity.class);
