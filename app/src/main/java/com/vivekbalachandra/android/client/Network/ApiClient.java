@@ -8,9 +8,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-//    public static final String BASE_URL = "http://ec2-13-59-147-233.us-east-2.compute.amazonaws.com:8000/tracker/";
+    public static final String BASE_URL = "http://ec2-13-59-147-233.us-east-2.compute.amazonaws.com:8000/tracker/";
 
-    public static final String BASE_URL = "http://192.168.0.102:8000/tracker/";
+    //public static final String BASE_URL = "http://192.168.0.102:8000/tracker/";
 
     private static Retrofit retrofit = null;
 

@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -73,7 +74,11 @@ public class LoginActivity extends AppCompatActivity  {
                 login.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Log.e(TAG, response.body());
+                        if(response.body() != null) {
+                            PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putString("csrf_token", response.body()).apply();
+                            PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putString("username", emailView.getText().toString()).apply();
+                            Log.e(TAG, PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).getString("csrf_token", "defaultStringIfNothingFound"));
+                        }
                     }
 
                     @Override
