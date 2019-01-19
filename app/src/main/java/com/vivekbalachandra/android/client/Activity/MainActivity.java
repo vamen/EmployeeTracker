@@ -9,9 +9,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.vivekbalachandra.android.client.Model.TaskModel;
+import com.vivekbalachandra.android.client.Model.UserModel;
 import com.vivekbalachandra.android.client.Network.ApiClient;
 import com.vivekbalachandra.android.client.Network.TrackerApis;
 import com.vivekbalachandra.android.client.R;
+import com.vivekbalachandra.android.client.Util.GenertalUtil;
 
 import java.util.List;
 
@@ -23,24 +25,15 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mTaskList = null;
     private RecyclerView.LayoutManager mLayoutManager = null;
-    private static String token=null;
-    private static String email=null;
+    private static UserModel userModel=null;
+
     private static  TrackerApis trackerApis=null;
+
     static {
         trackerApis=ApiClient.getClient().create(TrackerApis.class);
     }
-    public boolean isLoggedIn() {
-        SharedPreferences sp = this.getApplicationContext().getSharedPreferences("AuthData", Context.MODE_PRIVATE);
-        email = sp.getString("email", null);
-        if (email == null)
-            return false;
-        token = sp.getString("token", null);
 
-        if (token == null)
-            return false;
 
-        return true;
-    }
 
     public boolean isTrackerServiceRunning() {
         return true;
@@ -64,11 +57,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-        if (isLoggedIn()) {
+        userModel=GenertalUtil.CredentialExists(this.getApplicationContext());
+        if (userModel!=null) {
 
             bindViews();
-            Call<List<TaskModel>> data=trackerApis.getTasks(token,email);
+            Call<List<TaskModel>> data=trackerApis.getTasks(userModel.getToken(),userModel.getUser());
             if (isTrackerServiceRunning()) {
 
                 startTrackerService();

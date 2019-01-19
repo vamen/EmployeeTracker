@@ -2,6 +2,7 @@ package com.vivekbalachandra.android.client.Data;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.os.AsyncTask;
 import android.os.Looper;
 
 import com.vivekbalachandra.android.client.Data.Database.DAO.GPSTableDao;
@@ -10,21 +11,27 @@ import com.vivekbalachandra.android.client.Data.Database.DatabaseConnector;
 import com.vivekbalachandra.android.client.Data.Database.Entity.GPSData;
 import com.vivekbalachandra.android.client.Data.Database.Entity.TasksData;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DataBridge {
 
     private DatabaseConnector databaseConnector;
     private TasksTableDao tasksTableDao;
     private GPSTableDao gpsTableDao;
+    public Application application;
+    private  ExecutorService mExecutorService=null;
 
     public  DataBridge(Application application){
+        this.application=application;
+
         databaseConnector=DatabaseConnector.getDatabaseInstance(application);
         tasksTableDao=databaseConnector.tasksTableDao();
         gpsTableDao=databaseConnector.gpsTableDao();
+        mExecutorService=null;
     }
 
     LiveData<List<TasksData>> getTodaysTask(){
@@ -32,15 +39,35 @@ public class DataBridge {
         return tasksTableDao.getTodaysTask(date);
     }
 
-    void insertGpsData(GPSData gpsData){
+    void insertGpsData(final GPSData gpsData){
 
         if(Looper.myLooper()==Looper.getMainLooper())
         {
-         // Todo:run code to execute query in background thread
+
+         // TODO:run code to execute query in background thread
+            Runnable runnable=new Runnable() {
+                @Override
+                public void run() {
+                    gpsTableDao.insert(gpsData);
+                }
+            };
+            if(mExecutorService==null)
+            {
+                mExecutorService=Executors.newCachedThreadPool();
+            }
+            mExecutorService.execute(runnable);
+
+
         }else{
 
             gpsTableDao.insert(gpsData);
         }
+
+    }
+
+    // must be called when app is getting shutting down
+    void shutDownExecutor(){
+        mExecutorService.shutdown();
     }
 
 
