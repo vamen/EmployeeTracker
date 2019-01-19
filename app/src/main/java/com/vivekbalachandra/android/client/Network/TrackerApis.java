@@ -15,7 +15,7 @@ public interface TrackerApis {
 
 @FormUrlEncoded
 @POST("login")
-Call<String> login(@Field("username") String username,@Field("username") String password);
+Call<String> login(@Field("username") String username,@Field("password") String password);
 
 @POST("task")
 Call<List<TasksData>> getTasks(@Header("Authorization") String token, @Field("username") String username);

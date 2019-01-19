@@ -49,7 +49,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity  {
-
+    private static String TAG=LoginActivity.class.getSimpleName();
     private static  TrackerApis trackerApis;
     private AutoCompleteTextView emailView;
     private EditText pass;
@@ -68,16 +68,17 @@ public class LoginActivity extends AppCompatActivity  {
         click.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG,"looging in");
                 Call<String> login = trackerApis.login(emailView.getText().toString(), pass.getText().toString());
                 login.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Log.e("Sucess", response.toString());
+                        Log.e(TAG, response.body());
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        Log.e("ERROR", t.toString());
+                        Log.e(TAG, t.toString());
                     }
                 });
 
