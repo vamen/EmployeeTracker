@@ -34,7 +34,11 @@
 
         <service
             android:name=".Data.DataSyncService"
-            android:exported="false"></service>
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.vivekbalachandra.android.client.DATA_SYNC"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

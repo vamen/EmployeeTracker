@@ -34,12 +34,13 @@ public class DataBridge {
         mExecutorService=null;
     }
 
-    LiveData<List<TasksData>> getTodaysTask(){
+    public LiveData<List<TasksData>> getTodaysTask(){
+
         java.sql.Date date = new java.sql.Date(new Date().getTime());
         return tasksTableDao.getTodaysTask(date);
     }
 
-    void insertGpsData(final GPSData gpsData){
+    public void insertGpsData(final GPSData gpsData){
 
         if(Looper.myLooper()==Looper.getMainLooper())
         {
@@ -63,6 +64,39 @@ public class DataBridge {
         }
 
     }
+
+    public List<GPSData> getGpsData(){
+        java.sql.Date date = new java.sql.Date(new Date().getTime());
+        List<GPSData> gpsDatas= gpsTableDao.getGpsCordinateData(date);
+
+        return gpsDatas;
+    }
+
+    public void updateGpsData(final List<GPSData> gpsDatas){
+        for(GPSData gpsData:gpsDatas){
+            gpsData.status=1;
+        }
+        if(Looper.myLooper()==Looper.getMainLooper()){
+
+            Runnable runnable=new Runnable() {
+                @Override
+                public void run() {
+                    gpsTableDao.updateGpsCoordinateStatus(gpsDatas);
+                }
+            };
+            if(mExecutorService==null)
+            {
+                mExecutorService=Executors.newCachedThreadPool();
+            }
+            mExecutorService.execute(runnable);
+        }else {
+
+            gpsTableDao.updateGpsCoordinateStatus(gpsDatas);
+
+        }
+
+    }
+
     void insertTaskData(final TasksData tasksData){
         if(Looper.myLooper()==Looper.getMainLooper()){
 
@@ -73,6 +107,13 @@ public class DataBridge {
                     tasksTableDao.insert_task(tasksData);
             }
             };
+
+            if(mExecutorService==null){
+                mExecutorService=Executors.newCachedThreadPool();
+            }
+        }
+        else{
+            tasksTableDao.insert_task(tasksData);
         }
     }
 
@@ -86,13 +127,24 @@ public class DataBridge {
                     tasksTableDao.insertMultipleTask(tasksData);
                 }
             };
+            if(mExecutorService==null)
+            {
+                mExecutorService=Executors.newCachedThreadPool();
+            }
+            mExecutorService.execute(runnable);
+        }
+        else {
+
+            tasksTableDao.insertMultipleTask(tasksData);
         }
     }
+
 
     // must be called when app is getting shutting down
     void shutDownExecutor(){
         mExecutorService.shutdown();
     }
+
 
 
 }
