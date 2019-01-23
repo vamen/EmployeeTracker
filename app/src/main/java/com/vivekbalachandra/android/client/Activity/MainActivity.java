@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void bindViews() {
-
         mTaskList = findViewById(R.id.task_list);
         mLayoutManager = new LinearLayoutManager(this);
         mTaskList.setLayoutManager(mLayoutManager);

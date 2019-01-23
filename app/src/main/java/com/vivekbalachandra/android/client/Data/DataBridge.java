@@ -39,7 +39,7 @@ public class DataBridge {
         return tasksTableDao.getTodaysTask(date);
     }
 
-    void insertGpsData(final GPSData gpsData){
+    public void insertGpsData(final GPSData gpsData){
 
         if(Looper.myLooper()==Looper.getMainLooper())
         {
@@ -56,7 +56,6 @@ public class DataBridge {
                 mExecutorService=Executors.newCachedThreadPool();
             }
             mExecutorService.execute(runnable);
-
         }else{
 
             gpsTableDao.insert(gpsData);
