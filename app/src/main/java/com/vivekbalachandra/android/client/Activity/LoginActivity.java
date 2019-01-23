@@ -20,9 +20,9 @@ import android.widget.EditText;
 import com.vivekbalachandra.android.client.Network.ApiClient;
 import com.vivekbalachandra.android.client.Network.TrackerApis;
 import com.vivekbalachandra.android.client.R;
+
 import com.vivekbalachandra.android.client.Services.LocationTracker;
 import com.vivekbalachandra.android.client.Services.Location_Service;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,6 +62,9 @@ public class LoginActivity extends AppCompatActivity  {
                             startService(intent);
                             //LocationTracker.startActionBaz(LoginActivity.this,"","");
                             Log.e(TAG, PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).getString("csrf_token", "defaultStringIfNothingFound"));
+
+//                            Log.e(TAG, PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).getString("csrf_token", "defaultStringIfNothingFound"));
+                              //finish();
                         }
                     }
 

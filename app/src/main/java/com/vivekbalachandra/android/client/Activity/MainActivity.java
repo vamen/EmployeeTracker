@@ -1,14 +1,24 @@
 package com.vivekbalachandra.android.client.Activity;
 
+import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.vivekbalachandra.android.client.Adapters.TaskListAdapter;
+import com.vivekbalachandra.android.client.Data.DataSyncService;
+import com.vivekbalachandra.android.client.Data.Database.Entity.TasksData;
 import com.vivekbalachandra.android.client.Model.TaskModel;
+import com.vivekbalachandra.android.client.Model.TasksViewModel;
 import com.vivekbalachandra.android.client.Model.UserModel;
 import com.vivekbalachandra.android.client.Network.ApiClient;
 import com.vivekbalachandra.android.client.Network.TrackerApis;
@@ -26,16 +36,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mTaskList = null;
     private RecyclerView.LayoutManager mLayoutManager = null;
     private static UserModel userModel=null;
-
+    private TasksViewModel tasksViewModel=null;
     private static  TrackerApis trackerApis=null;
+    private TaskListAdapter adapter=null;
 
     static {
         trackerApis=ApiClient.getClient().create(TrackerApis.class);
     }
 
-    public boolean isTrackerServiceRunning() {
-        return true;
-    }
 
     public void bindViews() {
         mTaskList = findViewById(R.id.task_list);
@@ -44,10 +52,35 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void startTrackerService() {
 
+
+
+    protected void initialize_data(){
+        tasksViewModel=ViewModelProviders.of(this).get(TasksViewModel.class);
+        if(adapter==null)
+        adapter=new TaskListAdapter(this.getApplicationContext(),tasksViewModel.getAllTasks().getValue());
+        tasksViewModel.getAllTasks().observe(this, new Observer<List<TasksData>>() {
+            @Override
+            public void onChanged(@Nullable List<TasksData> tasksData) {
+                adapter.setDataset(tasksData);
+            }
+        });
     }
 
+    public boolean isTrackerServiceRunning() {
+        // TODO:Impliment this function
+        return false;
+    }
+
+
+
+    public void startTrackerService() {
+        // TODO:Impliment this function
+    }
+
+    public void startDataSyncService(){
+        startService(new Intent(this,DataSyncService.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +89,18 @@ public class MainActivity extends AppCompatActivity {
 
         userModel=GenertalUtil.CredentialExists(this.getApplicationContext());
         if (userModel!=null) {
-            bindViews();
-//            Call<List<TaskModel>> data=trackerApis.getTasks();
+
             if (isTrackerServiceRunning()) {
                 startTrackerService();
             }
+
+            startDataSyncService();
+
+
+            bindViews();
+            initialize_data();
+
+
         }else{
                 Intent intent=new Intent(this,LoginActivity.class);
                 startActivity(intent);

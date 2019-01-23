@@ -21,6 +21,7 @@ import com.vivekbalachandra.android.client.Data.DataBridge;
 import com.vivekbalachandra.android.client.Data.Database.Entity.GPSData;
 
 import java.util.Date;
+import java.util.List;
 
 public class Location_Service extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
     public Location_Service() {
@@ -109,6 +110,8 @@ public class Location_Service extends Service implements GoogleApiClient.Connect
             data.status = 0;
             DataBridge da = new DataBridge(this.getApplication());
             da.insertGpsData(data);
+            List<GPSData> gpsd = da.getGpsData();
+            Log.e("GPS info",String.valueOf(gpsd.size()));
         }
     }
 }
