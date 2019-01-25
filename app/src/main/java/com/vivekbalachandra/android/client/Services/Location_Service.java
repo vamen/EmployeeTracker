@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.vivekbalachandra.android.client.Data.DataBridge;
 import com.vivekbalachandra.android.client.Data.Database.Entity.GPSData;
+import com.vivekbalachandra.android.client.Util.GenertalUtil;
 
 import java.util.Date;
 import java.util.List;

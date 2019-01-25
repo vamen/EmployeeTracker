@@ -23,6 +23,8 @@ import com.vivekbalachandra.android.client.R;
 
 import com.vivekbalachandra.android.client.Services.LocationTracker;
 import com.vivekbalachandra.android.client.Services.Location_Service;
+import com.vivekbalachandra.android.client.Util.GenertalUtil;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,6 +49,7 @@ public class LoginActivity extends AppCompatActivity  {
         emailView = findViewById(R.id.email);
         pass = findViewById(R.id.password);
         click = findViewById(R.id.email_sign_in_button);
+        //GenertalUtil.check_network_gps(this);
         click.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,7 +67,7 @@ public class LoginActivity extends AppCompatActivity  {
                             Log.e(TAG, PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).getString("csrf_token", "defaultStringIfNothingFound"));
 
 //                            Log.e(TAG, PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).getString("csrf_token", "defaultStringIfNothingFound"));
-                              //finish();
+                            finish();
                         }
                     }
 
