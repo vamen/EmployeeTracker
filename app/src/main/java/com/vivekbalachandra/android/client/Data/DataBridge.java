@@ -12,6 +12,7 @@ import com.vivekbalachandra.android.client.Data.Database.DatabaseConnector;
 import com.vivekbalachandra.android.client.Data.Database.Entity.GPSData;
 import com.vivekbalachandra.android.client.Data.Database.Entity.TasksData;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -52,6 +53,8 @@ public class DataBridge {
             Runnable runnable=new Runnable() {
                 @Override
                 public void run() {
+                    Log.d("DATA BASE","inserting");
+
                     gpsTableDao.insert(gpsData);
                 }
             };
@@ -82,7 +85,10 @@ public class DataBridge {
             future = mExecutorService.submit(new Callable<List<GPSData>>() {
                 @Override
                 public List<GPSData> call() throws Exception {
-                    java.sql.Date date = new java.sql.Date(new Date().getTime());
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dateWithoutTime = sdf.parse(sdf.format(new Date()));
+                    java.sql.Date date = new java.sql.Date(dateWithoutTime.getTime());
                     List<GPSData> gpsDatas= gpsTableDao.getGpsCordinateData(date);
                     return gpsDatas;
                 }

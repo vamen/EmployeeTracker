@@ -45,6 +45,8 @@ public class Location_Service extends Service implements GoogleApiClient.Connect
         }
         return true;
     }
+
+
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
@@ -52,6 +54,7 @@ public class Location_Service extends Service implements GoogleApiClient.Connect
             googleApiClient.connect();
         }
     }
+
     private void startLocationUpdates() {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -67,6 +70,8 @@ public class Location_Service extends Service implements GoogleApiClient.Connect
 
         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
     }
+
+
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
@@ -110,6 +115,7 @@ public class Location_Service extends Service implements GoogleApiClient.Connect
             data.lat = String.valueOf(location.getLatitude());
             data.status = 0;
             DataBridge da = new DataBridge(this.getApplication());
+            Log.e("GPS info before","Running insertion");
             da.insertGpsData(data);
             List<GPSData> gpsd = da.getGpsData();
             Log.e("GPS info",String.valueOf(gpsd.size()));

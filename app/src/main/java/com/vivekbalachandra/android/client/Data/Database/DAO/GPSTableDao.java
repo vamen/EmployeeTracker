@@ -16,8 +16,12 @@ public interface GPSTableDao {
     @Insert
     void insert(GPSData data);
 
-    @Query("select * from gps_table where dateTime=:date and status=0")
+    @Query("select * from gps_table where dateTime>:date")
     List<GPSData> getGpsCordinateData(Date date);
+
+    @Query("select * from gps_table")
+    List<GPSData> getAllGpsCoordinates();
+
 
     @Update
     int updateGpsCoordinateStatus(List<GPSData> instances);

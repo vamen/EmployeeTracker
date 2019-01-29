@@ -120,6 +120,13 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(mNetworkSwitchStateReciver, new IntentFilter("com.devglan.broadcastreceiver.NETWORK_SWITCH_FILTER"));
         //registerReceiver(mWifiSwitchStateReciver, new IntentFilter(LocationManager.));
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
     private  void func()
     {
         ConnectivityManager cm =
